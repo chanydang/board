@@ -2,19 +2,39 @@
 <html>
 <head>
     <%include template/head%>
+    <script src="/js/boardLoad.js"></script>
 </head>
 <body>
-    <div class="write_form">
-        <form id="writeAction" action="/process/boardwrite" method="post">
-            <input type="text" class="inputSubject" id="title" name="title" placeholder="제목">
-            <input type="text" class="inputWriter" id="writer" name="writer" placeholder="작성자">
-            <!--<input type="password" class="inputPassword" id="pw" name="pw" placeholder="비밀번호">-->
-            <textarea class="textContents" id="contents" name="contents" rows="20" cols="80"></textarea>
-        </form>
-        <div id = "new" class="addBtngroup">
-            <a onclick="submitContents('add');"><div>SUBMIT</div></a>
-            <a onclick="cancelWriteForm('cancel');"><div>CANCEL</div></a>
-        </div>
-    </div>
-</body>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">No.</th>
+          <th scope="col">Title</th>
+          <th scope="col">Writer</th>
+          <th scope="col">Date</th>
+          <th scope="col">Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%function dateFormatChange(date){
+            var option={
+                weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
+            };
+            return date.toLocaleTimeString('ko-KR',option);
+        }%>
+         <%if(typeof contents!=='undefined'){
+              contents.forEach(function(elem,i){%>
+          <tr>
+              <td><%=++i%></td>
+              <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
+              <td><%=elem.writer%></td>
+              <td><%=dateFormatChange(elem.date)%></td>
+              <td><%=elem.count%></td>
+          </tr>
+          <%})
+          }%>
+      </tbody>
+    </table>
+        <button><a href="/process/boardfind" id="forboard" >게시판</a></button>
+  </body>
 </html>

@@ -25,7 +25,7 @@
               contents.forEach(function(elem,i){%>
           <tr>
               <td><%=i%></td>
-              <td><a href="/process/boardread?id=<%=elem._id%>"><%=elem.title%></a></td>
+              <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
               <td><%=elem.writer%></td>
               <td><%=dateFormatChange(elem.date)%></td>
               <td><%=elem.count%></td>

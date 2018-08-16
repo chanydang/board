@@ -13,10 +13,11 @@ module.exports = {
     //file:실행파일 path:route경로 method:함수이름 type:get or post #get, post 잘못 쓰면 인식 못함
     //nav 페이지 이동은 type:'get'으로.
 	route_info: [
-        {file:'./board',path:'/process/boardfind',method:'boardfind',type:'post'},
-        {file:'./board',path:'/process/boardwrite',method:'boardwrite',type:'post'},
-        {file:'./board',path:'/process/boardread',method:'boardread',type:'get'},
+        {file:'./board',path:'/process/boardfind',method:'boardfind',type:'get'},
+        {file:'./content',path:'/process/contentwrite',method:'contentwrite',type:'post'},
+        {file:'./content',path:'/process/contentread',method:'contentread',type:'get'},
         {file:'./content',path:'/process/contentmodify',method:'contentmodify',type:'get'},
+        {file:'./content',path:'/process/contentmodified',method:'contentmodified',type:'get'},
         {file:'./content',path:'/process/contentdelete',method:'contentdelete',type:'get'}
 	],
 	facebook: {		// passport facebook

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+    <%include template/head%>
+</head>
+<body>
+    <div class="write_form">
+        <form id="writeAction" action="/process/contentwrite" method="post">
+            <input type="text" class="inputSubject" id="title" name="title" placeholder="제목">
+            <input type="text" class="inputWriter" id="writer" name="writer" value="">
+            <!--<input type="password" class="inputPassword" id="pw" name="pw" placeholder="비밀번호">-->
+            <textarea class="textContents" id="contents" name="contents" rows="20" cols="80"></textarea>
+        </form>
+        <div id = "new" class="addBtngroup">
+            <a onclick="submitContents('add');"><div>SUBMIT</div></a>
+            <a onclick="cancelWriteForm('cancel');"><div>CANCEL</div></a>
+        </div>
+    </div>
+</body>
+</html>
