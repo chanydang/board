@@ -1,3 +1,4 @@
+<!--read,modify,delete-->
 <!doctype html>
 <html>
 <head>
@@ -33,7 +34,7 @@
          <div class="forbtn">
             <button class="btn btn-primary" type="submit"><a href="/process/contentmodify?id=<%=contents._id%>" class="wbtn">ADJUST</a></button>
             <input name="id" value="<%=contents._id%>" type="hidden">
-            <button class="btn btn-danger"><a href="/process/contentdelete" class="wbtn">DELELTE</a></button>
+            <button class="btn btn-danger"><a href="/process/contentdelete?id=<%=contents._id%>" class="wbtn">DELELTE</a></button>
          </div>
     </div>
 </body>

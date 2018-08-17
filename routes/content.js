@@ -12,7 +12,6 @@ var write=function(database,title,writer,contents,callback){
             callback(null,writing);
         }
     });
-
 }
 var contentwrite=function(req,res){
     console.log('contentwirte 호출');
@@ -74,11 +73,19 @@ var contentmodified=function(req,res){
                 });
            }
     });
-
 }
 var contentdelete=function(req,res){
-    var database=req.app.get('database');
     console.log('contentdelete 호출됨');
+    var database=req.app.get('database');
+    var contentid=req.query.id;
+    console.log('[%s] will be deleted:',contentid);
+    database.BoardModel.remove({_id:contentid},function(err,results){
+        if(results){
+            database.BoardModel.find({},function(err,results){
+                res.render('board',{contents:results});
+            });
+        }
+    });
 }
 module.exports.contentwrite=contentwrite;
 module.exports.contentwriteform=contentwriteform;
