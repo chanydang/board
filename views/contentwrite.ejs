@@ -4,17 +4,52 @@
     <%include template/head%>
 </head>
 <body>
-    <div class="write_form">
+    <div class="container">
+        <table class="table table-bordered">
+            <colgroup>
+                <col width="50">
+            </colgroup>
+            <thead>
+                <tr>
+                    <td colspan="2">글쓰기</td>
+                </tr>
+            </thead>
+            <tbody>
+                <form id="writeAction" action="/process/contentwrite" method="post">
+                <tr>
+                    <th scope="col" style="width:10%;">제목</th>
+                    <td class=""><input type="text" class="inputSubject" id="title" name="title" placeholder="제목" style="width:650px;"></td>
+                </tr>
+                <tr>
+                    <th style="width:10%;">내용</th>
+                    <td>
+                        <textarea class="textContents" id="contents" name="contents" required="" style="width: 650px; height: 250px; background-position: right top; margin: 0px;" placeholder="글 내용"></textarea>
+                    </td>
+                </tr>
+                </form>
+            </tbody>
+        </table>
+        <div class="forbtn">
+            <button class="btn btn-primary"><a onclick="submitContents('add');">SUBMIT</a></button>
+            <button class="btn btn-danger"><a onclick="cancelWriteForm('cancel');">CANCEL</a></button>
+        </div>
+    </div>
+    
+    <!--<div class="write_form">
+    <div class="container">
         <form id="writeAction" action="/process/contentwrite" method="post">
-            <input type="text" class="inputSubject" id="title" name="title" placeholder="제목">
-            <input type="text" class="inputWriter" id="writer" name="writer" value="">
-            <!--<input type="password" class="inputPassword" id="pw" name="pw" placeholder="비밀번호">-->
-            <textarea class="textContents" id="contents" name="contents" rows="20" cols="80"></textarea>
+            <div class="row">
+                <div class="col-4"><input type="text" class="inputSubject" id="title" name="title" placeholder="제목"></div>
+                <div class="col-1"><input type="text" class="inputWriter" id="writer" name="writer" value=""></div>
+            </div>
+            <div class="row">
+                <textarea class="textContents" id="contents" name="contents" rows="20" cols="80"></textarea>
+            </div>
         </form>
-        <div id = "new" class="addBtngroup">
+        <div id="new" class="addBtngroup">
             <a onclick="submitContents('add');"><div>SUBMIT</div></a>
             <a onclick="cancelWriteForm('cancel');"><div>CANCEL</div></a>
         </div>
-    </div>
+    </div>-->
 </body>
 </html>

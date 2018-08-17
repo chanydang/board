@@ -15,6 +15,7 @@ module.exports = {
 	route_info: [
         {file:'./board',path:'/process/boardfind',method:'boardfind',type:'get'},
         {file:'./content',path:'/process/contentwrite',method:'contentwrite',type:'post'},
+        {file:'./content',path:'/process/contentwriteform',method:'contentwriteform',type:'get'},
         {file:'./content',path:'/process/contentread',method:'contentread',type:'get'},
         {file:'./content',path:'/process/contentmodify',method:'contentmodify',type:'get'},
         {file:'./content',path:'/process/contentmodified',method:'contentmodified',type:'get'},

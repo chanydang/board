@@ -2,54 +2,55 @@
 <html>
 <head>
     <%include template/head%>
-    
 </head>
 <body>
     <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-        <a class="nav-item nav-link" id="nav-board-tab" data-toggle="tab" href="#nav-board" role="tab" aria-controls="nav-board" aria-selected="false" >Board</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
-      </div>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/process/boardfind">Board</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Null</a>
+          </li>
+        </ul>
     </nav>
-    <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">dsf</div>
-    <div class="tab-pane fade" id="nav-board" role="tabpanel" aria-labelledby="nav-board-tab">
-        
+    <%function dateFormatChange(date){
+        var option={
+            weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
+        };
+        return date.toLocaleTimeString('ko-KR',option);
+    }%>
+     <%if(typeof contents!=='undefined'){%>
+   <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">No.</th>
+          <th scope="col">Title</th>
+          <th scope="col">Writer</th>
+          <th scope="col">Date</th>
+          <th scope="col">Count</th>
+        </tr>
+      </thead>
+      <tbody>
+         <% contents.forEach(function(elem,i){%>
+          <tr>
+              <td><%=++i%></td>
+              <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
+              <td><%=elem.writer%></td>
+              <td><%=dateFormatChange(elem.date)%></td>
+              <td><%=elem.count%></td>
+          </tr>
+          <%})
+          }%>
+      </tbody>
+    </table>
+    <div class="paging">
+        <button id="writing"><a href="/process/contentwriteform">글쓰기</a></button>
     </div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
-</div>
-    <table class="table table-sm table-hover">
-          <thead>
-            <tr>
-              <th scope="col">No.</th>
-              <th scope="col">Title</th>
-              <th scope="col">Writer</th>
-              <th scope="col">Date</th>
-              <th scope="col">Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%function dateFormatChange(date){
-                var option={
-                    weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
-                };
-                return date.toLocaleTimeString('ko-KR',option);
-            }%>
-             <%if(typeof contents!=='undefined'){
-                  contents.forEach(function(elem,i){%>
-              <tr>
-                  <td><%=++i%></td>
-                  <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
-                  <td><%=elem.writer%></td>
-                  <td><%=dateFormatChange(elem.date)%></td>
-                  <td><%=elem.count%></td>
-              </tr>
-              <%})
-              }%>
-          </tbody>
-        </table>
-        <button><a href="/process/boardfind" id="forboard" >게시판</a></button>
+        <!--<button><a href="/process/boardfind" id="forboard" >게시판</a></button>-->
     
     <script src="/js/boardLoad.js"></script>
   </body>

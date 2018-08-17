@@ -1,3 +1,6 @@
+var contentwriteform=function(req,res){
+    res.render('contentwrite');
+}
 var write=function(database,title,writer,contents,callback){
     var writing=new database.BoardModel({title:title,writer:writer,contents:contents});
     writing.save(function(err){//중복되는 폴더 없으면 추가.
@@ -78,6 +81,7 @@ var contentdelete=function(req,res){
     console.log('contentdelete 호출됨');
 }
 module.exports.contentwrite=contentwrite;
+module.exports.contentwriteform=contentwriteform;
 module.exports.contentread=contentread;
 module.exports.contentmodify=contentmodify;
 module.exports.contentmodified=contentmodified;

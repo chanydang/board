@@ -1,5 +1,5 @@
 //var date1;
-$('#nav-board-tab').on('click',function(req,res){
+/*$('#nav-board-tab').on('click',function(req,res){
     console.log('load!');
     
     $.ajax({
@@ -47,7 +47,7 @@ function dateFormatChange(date){
                     weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
                 };
                 return date.toLocaleTimeString('ko-KR',option);
-            }
+            }*/
 /*
 function load(){
     console.log('load!');
