@@ -36,13 +36,36 @@
               }%>
           </tbody>
         </table>
-        <div class="paging">
-            <button class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
+        <div class="forbtn">
             <form method="get" action="/process/contentsearch">
+            <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
+            
                 <input type="input" value="" id="search" name="search">
                 <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
             </form>
         </div>
+        <form method="get" action="/process/contentsearch">
+            <div class="btnleft">
+                <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
+            </div>
+            <div class="btnright">    
+                <input type="input" value="" id="search" name="search">
+                <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
+            </div>
+        </form>
+        <div class="row">
+            <form method="get" action="/process/contentsearch">
+                <div class="col col-left">
+                    <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
+                </div>
+                <div class="col col-right">
+                    <input type="input" value="" id="search" name="search">
+                    <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
+                </div>            
+            </form>
+        </div>
+        
+        
     </div>
   </body>
 </html>
