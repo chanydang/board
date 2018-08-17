@@ -4,54 +4,6 @@
     <%include template/head%>
 </head>
 <body>
-    <nav>
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/process/boardfind">Board</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Null</a>
-          </li>
-        </ul>
-    </nav>
-    <%function dateFormatChange(date){
-        var option={
-            weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
-        };
-        return date.toLocaleTimeString('ko-KR',option);
-    }%>
-     <%if(typeof contents!=='undefined'){%>
-   <table class="table table-sm table-hover">
-      <thead>
-        <tr>
-          <th scope="col">No.</th>
-          <th scope="col">Title</th>
-          <th scope="col">Writer</th>
-          <th scope="col">Date</th>
-          <th scope="col">Count</th>
-        </tr>
-      </thead>
-      <tbody>
-         <% contents.forEach(function(elem,i){%>
-          <tr>
-              <td><%=++i%></td>
-              <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
-              <td><%=elem.writer%></td>
-              <td><%=dateFormatChange(elem.date)%></td>
-              <td><%=elem.count%></td>
-          </tr>
-          <%})
-          }%>
-      </tbody>
-    </table>
-    <div class="paging">
-        <button id="writing"><a href="/process/contentwriteform">글쓰기</a></button>
-    </div>
-        <!--<button><a href="/process/boardfind" id="forboard" >게시판</a></button>-->
-    
-    <script src="/js/boardLoad.js"></script>
-  </body>
+    <%include template/nav%>
+</body>
 </html>

@@ -1,0 +1,4 @@
+a.wbtn:hover, a.wbtn:link, a.wbtn:visited, a.wbtn:active{
+    text-decoration: none;
+    color:white;
+}

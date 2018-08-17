@@ -4,6 +4,7 @@
     <%include template/head%>
 </head>
 <body>
+    <%include template/nav%>
     <%function dateFormatChange(date){
         var option={
             weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
@@ -29,8 +30,11 @@
              </tbody>
          </table>
          <!--사용자와 글의 사용자가 일치할 경우에 수정 삭제 출력-->
-         <button><a href="/process/contentmodify?id=<%=contents._id%>">수정</a></button>
-         <button><a href="/process/contentdelete">삭제</a></button>
+         <div class="forbtn">
+            <button class="btn btn-primary" type="submit"><a href="/process/contentmodify?id=<%=contents._id%>" class="wbtn">ADJUST</a></button>
+            <input name="id" value="<%=contents._id%>" type="hidden">
+            <button class="btn btn-danger"><a href="/process/contentdelete" class="wbtn">DELELTE</a></button>
+         </div>
     </div>
 </body>
 </html>

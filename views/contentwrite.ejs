@@ -4,6 +4,7 @@
     <%include template/head%>
 </head>
 <body>
+    <%include template/nav%>
     <div class="container">
         <table class="table table-bordered">
             <colgroup>
@@ -34,22 +35,5 @@
             <button class="btn btn-danger"><a onclick="cancelWriteForm('cancel');">CANCEL</a></button>
         </div>
     </div>
-    
-    <!--<div class="write_form">
-    <div class="container">
-        <form id="writeAction" action="/process/contentwrite" method="post">
-            <div class="row">
-                <div class="col-4"><input type="text" class="inputSubject" id="title" name="title" placeholder="제목"></div>
-                <div class="col-1"><input type="text" class="inputWriter" id="writer" name="writer" value=""></div>
-            </div>
-            <div class="row">
-                <textarea class="textContents" id="contents" name="contents" rows="20" cols="80"></textarea>
-            </div>
-        </form>
-        <div id="new" class="addBtngroup">
-            <a onclick="submitContents('add');"><div>SUBMIT</div></a>
-            <a onclick="cancelWriteForm('cancel');"><div>CANCEL</div></a>
-        </div>
-    </div>-->
 </body>
 </html>
