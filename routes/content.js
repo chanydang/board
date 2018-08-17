@@ -87,9 +87,26 @@ var contentdelete=function(req,res){
         }
     });
 }
+var contentsearch=function(req,res){
+    console.log('contentsearch 호출됨');
+    var database=req.app.get('database');
+    var searchElem=req.query.search;
+    console.log('request value form user:',searchElem);
+    database.BoardModel.aggregate([{$match:{$or:
+                                          [
+                                              {title:{$regex:new RegExp(searchElem,'i')}},
+                                              {writer:{$regex:new RegExp(searchElem,'i')}},
+                                              {coment:{$regex:new RegExp(searchElem,'i')}}
+                                          ]
+                                         }}],function(err,results){
+        res.render('board',{contents:results});
+    });
+}
+
 module.exports.contentwrite=contentwrite;
 module.exports.contentwriteform=contentwriteform;
 module.exports.contentread=contentread;
 module.exports.contentmodify=contentmodify;
 module.exports.contentmodified=contentmodified;
 module.exports.contentdelete=contentdelete;
+module.exports.contentsearch=contentsearch;

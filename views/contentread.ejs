@@ -35,7 +35,11 @@
             <button class="btn btn-primary" type="submit"><a href="/process/contentmodify?id=<%=contents._id%>" class="wbtn">ADJUST</a></button>
             <input name="id" value="<%=contents._id%>" type="hidden">
             <button class="btn btn-danger"><a href="/process/contentdelete?id=<%=contents._id%>" class="wbtn">DELELTE</a></button>
+            <button class="btn btn-warning"><a class="wbtn" id="cancel">CANCEL</a></button>
          </div>
     </div>
+    
+    <script src="/js/cancel.js" ></script><!--ejs의 요소들이 다 load된 뒤에 참조해야 인식함.-->
+
 </body>
 </html>

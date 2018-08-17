@@ -38,10 +38,10 @@
         </table>
         <div class="paging">
             <button class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
-            <form method="get" action="/process/contentsearch">
-                <input type="input" value="" id="search" name="search">
-                <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
-            </form>
+            <input type="text" value="" id="search">
+            <%var search=document.getElementById('search').value;
+            console.log(search);%>
+            <button class="btn btn-dark" id="searchbtn"><a href="/process/contentsearch?search=<%=search%>" class="wbtn">검색</a></button>
         </div>
     </div>
   </body>
