@@ -32,6 +32,8 @@ var route_loader = require('./routes/route_loader');
 var app = express();
 
 var partials=require('express-partials');
+
+var store=require('store');
 //===== 뷰 엔진 설정 =====//
 app.set('views', __dirname + '/views');
 

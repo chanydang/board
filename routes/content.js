@@ -1,5 +1,4 @@
-var store=require('store')
-
+var store=require('store');
 var contentwriteform=function(req,res){
     res.render('contentwrite');
 }
@@ -122,18 +121,25 @@ var contentdelete=function(req,res){
         }
     });
 }
-
+var search=function(req,res){
+    console.log('search 호출됨');
+    console.log('searched',req.query.search);
+    store.set('searchedItem',req.query.search);
+    contentsearch(req,res);
+}
 var contentsearch=function(req,res){
     console.log('contentsearch 호출됨');
     var database=req.app.get('database');
-    var searchElem=req.query.search;//searched value by user
+    //var searchElem=req.query.search;//searched value by user
     //var page=1;
-    //var page=req.query.page;
-    //console.log('cur page:',page);
-    store.set('searchedItem',searchElem);
+    var searchElem=store.get('searchedItem');
+    var page=req.query.page;
+    console.log('cur page:',page);
+    
+    //store.set('searchedItem',searchElem);
     console.log('request value from user in search():',searchElem);
-    //if(page==null){page=1;}
-    //var skipSize=(page-1)*10;
+    if(typeof page==='null'||typeof page==='undefined'){page=1;}
+    var skipSize=(page-1)*10;
     var limitSize=10;
     var pageNum=1;
     database.BoardModel.aggregate([{$match:{$or:
@@ -153,11 +159,12 @@ var contentsearch=function(req,res){
                                               ]
                                              }},
                                       {$sort:{date:-1}},
-                                       //{$skip:skipSize},
+                                       {$skip:skipSize},
                                        {$limit:limitSize}
                                       ],function(err,results){
             console.log('찾은 글 수:%d 페이지 수:%d',countedResults.length,pageNum);
-            res.render('boardsearched',{contents:results,pages:pageNum});
+            //res.render('boardsearched',{contents:results,pages:pageNum});
+            res.render('board',{contents:results,pages:pageNum,searched:searchElem});
        // console.log('검색 결과:',results.length);
         /*if(results){
                 var page=1;
@@ -245,4 +252,6 @@ module.exports.contentmodify=contentmodify;
 module.exports.contentmodified=contentmodified;
 module.exports.contentdelete=contentdelete;
 module.exports.contentsearch=contentsearch;
+module.exports.search=search;
+
 module.exports.contentsearched=contentsearched;

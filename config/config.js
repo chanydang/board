@@ -21,6 +21,7 @@ module.exports = {
         {file:'./content',path:'/process/contentmodified',method:'contentmodified',type:'get'},
         {file:'./content',path:'/process/contentdelete',method:'contentdelete',type:'get'},
         {file:'./content',path:'/process/contentsearch',method:'contentsearch',type:'get'},
+        {file:'./content',path:'/process/search',method:'search',type:'get'},
         {file:'./content',path:'/process/contentsearched',method:'contentsearched',type:'get'},
         
 	],

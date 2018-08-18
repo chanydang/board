@@ -15,7 +15,7 @@
     <div class="container">
        <table class="table table-sm table-hover">
           <thead>
-            <tr>            
+            <tr>
               <th scope="col">Title</th>
               <th scope="col">Writer</th>
               <th scope="col">Date</th>
@@ -35,11 +35,17 @@
           </tbody>
         </table>
         
-        <%for(var i=1;i<=pages;i++){%>
-            <a href="/process/boardfind?page=<%=i%>"><%=i%></a>
-        <%}%>
+        <%if(typeof searched!=='undefined'){
+            for(var i=1;i<=pages;i++){%>
+                <a href="/process/contentsearch?page=<%=i%>"><%=i%></a>
+            <%}
+        }else{
+            for(var i=1;i<=pages;i++){%>
+                <a href="/process/boardfind?page=<%=i%>"><%=i%></a>
+            <%}
+        }%>
         
-        <form method="get" action="/process/contentsearch">
+        <form method="get" action="/process/search">
             <div class="btnleft">
                 <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
             </div>
