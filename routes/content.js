@@ -126,11 +126,14 @@ var contentdelete=function(req,res){
 var contentsearch=function(req,res){
     console.log('contentsearch 호출됨');
     var database=req.app.get('database');
-    var searchElem=req.query.search;
+    var searchElem=req.query.search;//searched value by user
+    //var page=1;
+    //var page=req.query.page;
+    //console.log('cur page:',page);
     store.set('searchedItem',searchElem);
     console.log('request value from user in search():',searchElem);
-    var page=1;
-    var skipSize=(page-1)*10;
+    //if(page==null){page=1;}
+    //var skipSize=(page-1)*10;
     var limitSize=10;
     var pageNum=1;
     database.BoardModel.aggregate([{$match:{$or:
@@ -139,8 +142,8 @@ var contentsearch=function(req,res){
                                               {writer:{$regex:new RegExp(searchElem,'i')}},
                                               {coment:{$regex:new RegExp(searchElem,'i')}}
                                           ]
-                                         }}],function(err,results){
-                    pageNum=Math.ceil(results.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
+                                         }}],function(err,countedResults){
+                    pageNum=Math.ceil(countedResults.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
 
         database.BoardModel.aggregate([{$match:{$or:
                                               [
@@ -150,10 +153,10 @@ var contentsearch=function(req,res){
                                               ]
                                              }},
                                       {$sort:{date:-1}},
-                                       {$skip:skipSize},
+                                       //{$skip:skipSize},
                                        {$limit:limitSize}
                                       ],function(err,results){
-            console.log('찾은 글 수:%d 페이지 수:%d',results.length,pageNum);
+            console.log('찾은 글 수:%d 페이지 수:%d',countedResults.length,pageNum);
             res.render('boardsearched',{contents:results,pages:pageNum});
        // console.log('검색 결과:',results.length);
         /*if(results){
@@ -181,10 +184,12 @@ var contentsearch=function(req,res){
 var contentsearched=function(req,res){
     console.log('contentsearched 호출됨');
     var database=req.app.get('database');
+    var page=req.query.page;
     searchElem=store.get('searchedItem');
     //contentsearch()에서 localStorage에 검색,저장된 값을 사용.
     console.log('request value from user in searched():',searchElem);
-    var page=1;
+    console.log('cur page in searched:');
+    if(page===null||page===undefined) page=1;
     var skipSize=(page-1)*10;
     var limitSize=10;
     var pageNum=1;
