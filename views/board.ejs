@@ -15,8 +15,7 @@
     <div class="container">
        <table class="table table-sm table-hover">
           <thead>
-            <tr>
-              <th scope="col">No.</th>
+            <tr>            
               <th scope="col">Title</th>
               <th scope="col">Writer</th>
               <th scope="col">Date</th>
@@ -25,8 +24,7 @@
           </thead>
           <tbody>
              <% contents.forEach(function(elem,i){%>
-              <tr>
-                  <td><%=++i%></td>
+              <tr>                  
                   <td><a href="/process/contentread?id=<%=elem._id%>"><%=elem.title%></a></td>
                   <td><%=elem.writer%></td>
                   <td><%=dateFormatChange(elem.date)%></td>
@@ -36,14 +34,11 @@
               }%>
           </tbody>
         </table>
-        <div class="forbtn">
-            <form method="get" action="/process/contentsearch">
-            <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
-            
-                <input type="input" value="" id="search" name="search">
-                <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
-            </form>
-        </div>
+        
+        <%for(var i=1;i<=pages;i++){%>
+            <a href="/process/boardfind?page=<%=i%>"><%=i%></a>
+        <%}%>
+        
         <form method="get" action="/process/contentsearch">
             <div class="btnleft">
                 <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
@@ -53,19 +48,6 @@
                 <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
             </div>
         </form>
-        <div class="row">
-            <form method="get" action="/process/contentsearch">
-                <div class="col col-left">
-                    <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
-                </div>
-                <div class="col col-right">
-                    <input type="input" value="" id="search" name="search">
-                    <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
-                </div>            
-            </form>
-        </div>
-        
-        
     </div>
   </body>
 </html>

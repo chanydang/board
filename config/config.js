@@ -20,7 +20,9 @@ module.exports = {
         {file:'./content',path:'/process/contentmodify',method:'contentmodify',type:'get'},
         {file:'./content',path:'/process/contentmodified',method:'contentmodified',type:'get'},
         {file:'./content',path:'/process/contentdelete',method:'contentdelete',type:'get'},
-        {file:'./content',path:'/process/contentsearch',method:'contentsearch',type:'get'}
+        {file:'./content',path:'/process/contentsearch',method:'contentsearch',type:'get'},
+        {file:'./content',path:'/process/contentsearched',method:'contentsearched',type:'get'},
+        
 	],
 	facebook: {		// passport facebook
 		clientID: '196604394366966',
