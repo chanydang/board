@@ -23,6 +23,8 @@ module.exports = {
         {file:'./content',path:'/process/contentsearch',method:'contentsearch',type:'get'},
         {file:'./content',path:'/process/search',method:'search',type:'get'},
         {file:'./content',path:'/process/contentsearched',method:'contentsearched',type:'get'},
+        //댓글
+        {file:'./reply',path:'/process/reply',method:'replyadd',type:'post'},
         
 	],
 	facebook: {		// passport facebook

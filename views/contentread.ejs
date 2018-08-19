@@ -3,6 +3,7 @@
 <html>
 <head>
     <%include template/head%>
+    <link rel="stylesheet" href="/css/contentread.css">
 </head>
 <body>
     <%include template/nav%>
@@ -38,7 +39,28 @@
             <button class="btn btn-warning"><a class="wbtn" id="cancel">CANCEL</a></button>
          </div>
     </div>
-    
+    <div class="container">
+        <%for(var j=0;j<contents.comments.length;j++){%>
+        <div class="comment_box">
+        <ul class="comment">
+            <li class="comment_info">
+                <span><%=contents.comments[j].name%></span>
+                <span><%=dateFormatChange(contents.comments[j].date)%></span>
+            </li>
+            <li class="comment_area">
+                <%=contents.comments[j].memo%>
+            </li>
+        </ul>
+        </div>
+        <%}%>
+    </div>
+    <div class="container">
+        <form action="/process/reply" method="post">
+            <div>writer nickname</div>
+            <textarea style="width:100%;" rows="4" placeholder="댓글 남기기" name="reply"></textarea>
+            <input type="submit" value="작성" class="btn btn-primary"><input value="<%=contents._id%>" type="hidden" name="contentid">
+        </form>
+    </div>
     <script src="/js/cancel.js" ></script><!--ejs의 요소들이 다 load된 뒤에 참조해야 인식함.-->
 
 </body>
