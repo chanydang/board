@@ -130,120 +130,43 @@ var search=function(req,res){
 var contentsearch=function(req,res){
     console.log('contentsearch 호출됨');
     var database=req.app.get('database');
-    //var searchElem=req.query.search;//searched value by user
-    //var page=1;
-    var searchElem=store.get('searchedItem');
     var page=req.query.page;
+    var searchElem=store.get('searchedItem');
     console.log('cur page:',page);
-    
-    //store.set('searchedItem',searchElem);
     console.log('request value from user in search():',searchElem);
     if(typeof page==='null'||typeof page==='undefined'){page=1;}
     var skipSize=(page-1)*10;
     var limitSize=10;
     var pageNum=1;
-    database.BoardModel.aggregate([{$match:{$or:
-                                          [
-                                              {title:{$regex:new RegExp(searchElem,'i')}},
-                                              {writer:{$regex:new RegExp(searchElem,'i')}},
-                                              {coment:{$regex:new RegExp(searchElem,'i')}}
-                                          ]
-                                         }}],function(err,countedResults){
-                    pageNum=Math.ceil(countedResults.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
-
-        database.BoardModel.aggregate([{$match:{$or:
-                                              [
-                                                  {title:{$regex:new RegExp(searchElem,'i')}},
-                                                  {writer:{$regex:new RegExp(searchElem,'i')}},
-                                                  {coment:{$regex:new RegExp(searchElem,'i')}}
-                                              ]
-                                             }},
-                                      {$sort:{date:-1}},
-                                       {$skip:skipSize},
-                                       {$limit:limitSize}
-                                      ],function(err,results){
-            console.log('찾은 글 수:%d 페이지 수:%d',countedResults.length,pageNum);
-            //res.render('boardsearched',{contents:results,pages:pageNum});
-            res.render('board',{contents:results,pages:pageNum,searched:searchElem});
-       // console.log('검색 결과:',results.length);
-        /*if(results){
-                var page=1;
-                var skipSize=(page-1)*10;
-                var limitSize=10;
-                var pageNum=1;
-                //database.BoardModel.count({},function(err,count){
-                    pageNum=Math.ceil(results.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
-                    database.BoardModel.find({}).sort({date:-1})//최신순
-                                             .skip(skipSize)//현재 페이지 앞부분 스킵
-                                              .limit(limitSize)//한 페이지당 몇개의 글
-                                            .exec(function(err,results){
-                        res.render('board',{contents:results,pages:pageNum});
-                    });
-                //});
-            
-            //res.render('board',{contents:results});
-        }else{
-            
-        }*/
-        });
-    });
-}
-var contentsearched=function(req,res){
-    console.log('contentsearched 호출됨');
-    var database=req.app.get('database');
-    var page=req.query.page;
-    searchElem=store.get('searchedItem');
-    //contentsearch()에서 localStorage에 검색,저장된 값을 사용.
-    console.log('request value from user in searched():',searchElem);
-    console.log('cur page in searched:');
-    if(page===null||page===undefined) page=1;
-    var skipSize=(page-1)*10;
-    var limitSize=10;
-    var pageNum=1;
-    database.BoardModel.aggregate([{$match:{$or:
-                                          [
-                                              {title:{$regex:new RegExp(searchElem,'i')}},
-                                              {writer:{$regex:new RegExp(searchElem,'i')}},
-                                              {coment:{$regex:new RegExp(searchElem,'i')}}
-                                          ]
-                                         }}],function(err,results){
-                    pageNum=Math.ceil(results.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
-
-        database.BoardModel.aggregate([{$match:{$or:
-                                              [
-                                                  {title:{$regex:new RegExp(searchElem,'i')}},
-                                                  {writer:{$regex:new RegExp(searchElem,'i')}},
-                                                  {coment:{$regex:new RegExp(searchElem,'i')}}
-                                              ]
-                                             }},
-                                      {$sort:{date:-1}},
-                                       {$skip:skipSize},
-                                       {$limit:limitSize}
-                                      ],function(err,results){
-            console.log('찾은 글 수:%d 페이지 수:%d',results.length,pageNum);
-            res.render('boardsearched',{contents:results,pages:pageNum});
-       // console.log('검색 결과:',results.length);
-        /*if(results){
-                var page=1;
-                var skipSize=(page-1)*10;
-                var limitSize=10;
-                var pageNum=1;
-                //database.BoardModel.count({},function(err,count){
-                    pageNum=Math.ceil(results.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
-                    database.BoardModel.find({}).sort({date:-1})//최신순
-                                             .skip(skipSize)//현재 페이지 앞부분 스킵
-                                              .limit(limitSize)//한 페이지당 몇개의 글
-                                            .exec(function(err,results){
-                        res.render('board',{contents:results,pages:pageNum});
-                    });
-                //});
-            
-            //res.render('board',{contents:results});
-        }else{
-            
-        }*/
-        });
-    });
+    database.BoardModel.aggregate(
+        [{$match:
+          {$or:
+              [
+                  {title:{$regex:new RegExp(searchElem,'i')}},
+                  {writer:{$regex:new RegExp(searchElem,'i')}},
+                  {coment:{$regex:new RegExp(searchElem,'i')}}
+              ]
+          }
+         }],function(err,countedResults){
+             pageNum=Math.ceil(countedResults.length/limitSize);//전체 글 수 / 한 페이지 당 보여줄 글 수
+             database.BoardModel.aggregate(
+                 [{$match:{$or:
+                  [
+                      {title:{$regex:new RegExp(searchElem,'i')}},
+                      {writer:{$regex:new RegExp(searchElem,'i')}},
+                      {coment:{$regex:new RegExp(searchElem,'i')}}
+                  ]
+                 }},
+                  {$sort:{date:-1}},
+                   {$skip:skipSize},
+                   {$limit:limitSize}
+                  ],function(err,results){
+                    console.log('contentsearch 찾은 글 수:%d 페이지 수:%d',countedResults.length,pageNum);//검색시 실행.
+                    res.render('board',{contents:results,pages:pageNum,searched:searchElem});
+                    }
+             );
+        }
+    );
 }
 module.exports.contentwrite=contentwrite;
 module.exports.contentwriteform=contentwriteform;
@@ -253,5 +176,3 @@ module.exports.contentmodified=contentmodified;
 module.exports.contentdelete=contentdelete;
 module.exports.contentsearch=contentsearch;
 module.exports.search=search;
-
-module.exports.contentsearched=contentsearched;

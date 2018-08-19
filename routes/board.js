@@ -1,4 +1,4 @@
-var boardfind=function(req,res){
+var boardfind=function(req,res){//게시판의 전체 글 보기.
     var database=req.app.get('database');
     console.log('boardfind 호출됨');
     var page=req.query.page;//사용자가 클릭한 페이지 번호

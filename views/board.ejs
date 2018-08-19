@@ -44,16 +44,20 @@
                 <a href="/process/boardfind?page=<%=i%>"><%=i%></a>
             <%}
         }%>
-        
         <form method="get" action="/process/search">
             <div class="btnleft">
                 <button type="button" class="btn btn-primary" id="writing"><a href="/process/contentwriteform" class="wbtn">글쓰기</a></button>
             </div>
-            <div class="btnright">    
+            <div class="btnright">
+                <%if(typeof searched!=='undefined'){%>
+                <input type="input" value="<%=searched%>" id="search" name="search">
+                <%}else{%>
                 <input type="input" value="" id="search" name="search">
+                <%}%>
                 <button class="btn btn-dark" id="searchbtn" type="submit">검색</button>
             </div>
         </form>
     </div>
+        
   </body>
 </html>
