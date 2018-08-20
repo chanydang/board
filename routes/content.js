@@ -44,13 +44,14 @@ var contentwrite=function(req,res){
 }
 var contentread=function(req,res){
     var database=req.app.get('database');
-    var contentid=req.param('id');
+    var contentid=req.query.id;
     database.BoardModel.findOne({_id:contentid},function(err,results){
         if(err) throw err;
         results.count+=1;
+        var reply_pg=Math.ceil(results.comments.length/3);
         results.save(function(err){
             if(err) throw err;
-            res.render('contentread.ejs',{contents:results});
+            res.render('contentread.ejs',{contents:results,replypage:reply_pg});
         });
     });
 }

@@ -4,15 +4,51 @@
 <head>
     <%include template/head%>
     <link rel="stylesheet" href="/css/contentread.css">
+
 </head>
+    <script>
+    function dateFormatChange(date){
+        var option={
+            weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
+        };
+        console.log('date:',date);
+        //return date;
+        return date.toLocaleTimeString('ko-KR');
+    }
+        function changePage(page){
+        console.log('changePage',page);
+            $.ajax({
+                url: '/process/replypage?id=<%=contents._id%>&page='+page+"&max=<%=contents.comments.length%>",
+                type: "get",
+                success: function(reply) {
+                    var output = '';
+                    for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
+                        output +=
+                            '<div class="comment_box">'
+                            +   '<ul class="comment">'
+                            +       '<li class="comment_info">'
+                            +         '<span>'+reply[i].name+'</span>'
+                            +         '<span>'+reply[i].date+'</span>'
+                            +       '</li>'
+                            +       '<li class="comment_area">'
+                            +          reply[i].memo
+                            +       '</li>'
+                            +   '</ul>'
+                            +'</div>';
+                    }
+                    $('.reply_list').html(output);
+                }
+            });
+    }
+</script>
 <body>
-    <%include template/nav%>
     <%function dateFormatChange(date){
         var option={
             weekday:'short',year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
         };
         return date.toLocaleTimeString('ko-KR',option);
     }%>
+    <%include template/nav%>
      <div class="container">
          <table class="table">
             <thead>
@@ -39,21 +75,35 @@
             <button class="btn btn-warning"><a class="wbtn" id="cancel">BACK</a></button>
          </div>
     </div>
+    
     <div class="container">
-        <%for(var j=0;j<contents.comments.length;j++){%>
-        <div class="comment_box">
-        <ul class="comment">
-            <li class="comment_info">
-                <span><%=contents.comments[j].name%></span>
-                <span><%=dateFormatChange(contents.comments[j].date)%></span>
-            </li>
-            <li class="comment_area">
-                <%=contents.comments[j].memo%>
-            </li>
-        </ul>
+        <div class="reply_list">
+        <%
+        for(var j=0;j<contents.comments.length;j++){
+            if(j<5){%>
+            <div class="comment_box">
+            <ul class="comment">
+                <li class="comment_info">
+                    <span><%=contents.comments[j].name%></span>
+                    <span><%=dateFormatChange(contents.comments[j].date)%></span>
+                </li>
+                <li class="comment_area">
+                    <%=contents.comments[j].memo%>
+                </li>
+            </ul>
+            </div>
+        <%}
+        }%>
         </div>
-        <%}%>
     </div>
+   
+    <%if(typeof replypage!=='undefined'){%>
+        <div class="container">
+            <%for(var k=1;k<=replypage;k++){%>
+            <a href="#" onclick="changePage(<%=k%>);"><%=k%></a>
+            <%}%>
+        </div>
+    <%}%>
     <div class="container">
         <form action="/process/reply" method="post">
             <textarea style="width:100%;" rows="4" placeholder="댓글 남기기" name="reply"></textarea>
@@ -61,6 +111,5 @@
         </form>
     </div>
     <script src="/js/cancel.js" ></script><!--ejs의 요소들이 다 load된 뒤에 참조해야 인식함.-->
-
 </body>
 </html>

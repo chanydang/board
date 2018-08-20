@@ -24,6 +24,7 @@ module.exports = {
         {file:'./content',path:'/process/search',method:'search',type:'get'},
         //댓글
         {file:'./reply',path:'/process/reply',method:'replyadd',type:'post'},
+        {file:'./reply',path:'/process/replypage',method:'replyPage',type:'get'},
 	],
 	facebook: {		// passport facebook
 		clientID: '196604394366966',
