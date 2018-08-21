@@ -35,5 +35,55 @@ var replyPage=function(req,res){
     });
 }
 
+var replymodify=function(req,res){
+    console.log('replymodify 호출됨');
+    var database=req.app.get('database');
+    var contentid=req.query.contentid;
+    var replyid=req.query.replyid;
+    console.log('id:',contentid,',', replyid);
+    database.BoardModel.findOne({_id:contentid},{comments:{$elemMatch:{_id:replyid}}},function(err,reply){
+        if(err) throw err;
+        console.log(reply);
+        res.send(reply.comments);
+       // console.log(reply[0].comments);
+       // res.send({reply:reply[0].comments});
+    });
+}
+
+var replymodified=function(req,res){
+    console.log('replymodified 호출됨');
+    var database=req.app.get('database');
+    var mongoose=require('mongoose');
+    var contentid=req.query.contentid;
+    var replyid=req.query.replyid;
+    var modifiedtext=req.query.modifiedtext;
+    console.log(mongoose.Types.ObjectId(contentid),',',replyid,',',modifiedtext,':',typeof modifiedtext);
+    //database.BoardModel.find({_id:contentid})
+    database.BoardModel.findOneAndUpdate(
+        {_id:contentid,comments:{$elemMatch:{_id:replyid}}},
+        {$set:{"comments.$.memo":modifiedtext}},
+        function(err,results){
+            if(err) throw err;
+            console.log(results);
+            res.send({reply:results.comments});
+    });
+    /*database.BoardModel.findOneAndUpdate(
+        {_id:contentid},//1. 글 찾기
+        {$set:{"comments.$[elem].memo":modifiedtext}},//해당 배열 요소의 memo에 값 쓰기
+        {arrayFilters:[{"elem._id":replyid}],new:true},//2. 배열의 요소 중 id 일치하는 것 찾기
+        function(err,modified){
+            if(err) throw err;
+            console.log('modified',modified);
+            //console.log('modified',modified.comments);
+            res.send({reply:modified.comments});
+    });*/
+}
+var replydelete=function(req,res){
+    console.log('replydelete 호출됨');
+    var database=req.app.get('database');
+}
 module.exports.replyadd=replyadd;
 module.exports.replyPage=replyPage;
+module.exports.replymodify=replymodify;
+module.exports.replymodified=replymodified;
+module.exports.replydelete=replydelete;

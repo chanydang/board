@@ -25,6 +25,9 @@ module.exports = {
         //댓글
         {file:'./reply',path:'/process/reply',method:'replyadd',type:'post'},
         {file:'./reply',path:'/process/replypage',method:'replyPage',type:'get'},
+        {file:'./reply',path:'/process/replymodify',method:'replymodify',type:'get'},
+        {file:'./reply',path:'/process/replymodified',method:'replymodified',type:'get'},
+        {file:'./reply',path:'/process/replydelete',method:'replydelete',type:'get'}
 	],
 	facebook: {		// passport facebook
 		clientID: '196604394366966',

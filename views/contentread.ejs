@@ -4,7 +4,7 @@
 <head>
     <%include template/head%>
     <link rel="stylesheet" href="/css/contentread.css">
-
+    <link rel="stylesheet" href="/css/reply.css">
 </head>
     <script>
         function dateChange(date){
@@ -17,30 +17,83 @@
             return d.toLocaleTimeString('ko-KR',option);
         }
         function changePage(page){
-        console.log('changePage',page);
-            $.ajax({
-                url: '/process/replypage?id=<%=contents._id%>&page='+page+"&max=<%=contents.comments.length%>",
-                type: "get",
-                success: function(reply) {
-                    var output = '';
-                    for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
-                        output +=
-                            '<div class="comment_box">'
-                            +   '<ul class="comment">'
-                            +       '<li class="comment_info">'
-                            +         '<span>'+reply[i].name+'</span>'
-                            +         ' <span>'+dateChange(reply[i].date)+'</span>'
-                            +       '</li>'
-                            +       '<li class="comment_area">'
-                            +          reply[i].memo
-                            +       '</li>'
-                            +   '</ul>'
-                            +'</div>';
+            console.log('changePage',page);
+                $.ajax({
+                    url: '/process/replypage?id=<%=contents._id%>&page='+page+"&max=<%=contents.comments.length%>",
+                    type: "get",
+                    success: function(reply) {
+                        var output = '';
+                        for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
+                            output +=
+                                '<div class="comment_box">'
+                                +   '<ul class="comment">'
+                                +       '<li class="comment_info">'
+                                +         '<span>'+reply[i].name+'</span>'
+                                +         ' <span>'+dateChange(reply[i].date)+'</span>'
+                                +       '</li>'
+                                +       '<li class="comment_area">'
+                                +          reply[i].memo
+                                +       '</li>'
+                                +   '</ul>'
+                                +'</div>';
+                        }
+                        $('.reply_list').html(output);
                     }
-                    $('.reply_list').html(output);
+                });
+        }
+        function replymodified(contentid,replyid){
+            console.log('replymodified 호출',contentid,',',replyid);
+            $.ajax({
+                url:'/process/replymodified?contentid='+contentid+'&replyid='+replyid+'&modifiedtext='+$('textarea#modify').val()+"",
+                type:"get",
+                success:function(reply){
+                    var output='';
+                    console.log('reply',reply);
+                    for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
+                            output +=
+                                '<div class="comment_box">'
+                                +   '<ul class="comment">'
+                                +       '<li class="comment_info">'
+                                +         '<span>'+reply[i].name+'</span>'
+                                +         ' <span>'+dateChange(reply[i].date)+'</span>'
+                                +       '</li>'
+                                +       '<li class="comment_area">'
+                                +          reply[i].memo
+                                +       '</li>'
+                                +   '</ul>'
+                                +'</div>';
+                        }
+                        $('.reply_list').html(output);
                 }
-            });
-    }
+            })
+        }
+        function replymodify(contentid,replyid){
+            console.log('id:',contentid,',',replyid);
+                $.ajax({
+                    url: '/process/replymodify?contentid='+contentid+'&replyid='+replyid+"",
+                    type: "get",
+                    success: function(reply) {
+                        var output = '';
+                        console.log('reply',reply);
+                        for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
+                            output +=//추후에 해당 댓글 밑에 붙이기.
+                                '<div class="comment_box">'
+                                +   '<ul class="comment">'
+                                +       '<li class="comment_info">'
+                                +         '<span>'+reply[i].name+'</span>'
+                                +         ' <span>'+dateChange(reply[i].date)+'</span>'
+                                +           '<div class="left">'
+                                +               '<a href="#" onclick="replymodified(\''+contentid+'\',\''+replyid+'\');" class="wbtn">ADJUST</a>'
+                                +           '</div>'
+                                +       '</li>'
+                                +       '<li class="comment_area"><textarea id="modify" style="width:100%;" rows="4" name="reply">'+reply[i].memo+'</textarea></li>'
+                                +   '</ul>'
+                                +'</div>';
+                        }
+                        $('.reply_list').html(output);
+                    }
+                });
+        }
 </script>
 <body>
     <%function dateFormatChange(date){
@@ -84,8 +137,12 @@
             <div class="comment_box">
             <ul class="comment">
                 <li class="comment_info">
-                    <span><%=contents.comments[j].name%></span>
-                    <span><%=dateFormatChange(contents.comments[j].date)%></span>
+                    <span class="one_line"><%=contents.comments[j].name%></span>
+                    <span class="one_line"><%=dateFormatChange(contents.comments[j].date)%></span>
+                    <div class="left">
+                        <a href="#" onclick="replymodify('<%=contents._id%>','<%=contents.comments[j]._id%>');" class="wbtn">ADJUST</a>
+                        <button class="btn btn-danger"><a href="/process/replydelete?id=<%=contents.comments[j]._id%>" class="wbtn">DELETE</a></button>
+                    </div>
                 </li>
                 <li class="comment_area">
                     <%=contents.comments[j].memo%>

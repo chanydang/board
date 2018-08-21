@@ -58,7 +58,7 @@ var contentread=function(req,res){
 var contentmodify=function(req,res){
     var database=req.app.get('database');
     console.log('contentmodify 호출됨');
-    var contentid=req.param('id');//작성 글의 id를 가지고 찾음
+    var contentid=req.query.id;//작성 글의 id를 가지고 찾음
     database.BoardModel.findOne({_id:contentid},function(err,results){
         if(err) throw err;
         res.render('contentmodify.ejs',{contents:results});
@@ -70,7 +70,7 @@ var contentmodified=function(req,res){
     var title=req.query.title;
     var writer=req.query.writer;
     var contents=req.query.contents;
-    var contentid=req.param('id');
+    var contentid=req.query.id;
     console.log('title:',title,'id:',contentid,',',writer);
     database.BoardModel.findOneAndUpdate(
        {_id:contentid},

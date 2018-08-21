@@ -1,4 +1,4 @@
-function changePage(page){
+/*function changePage(page){
     console.log('changePage');
     $.get('/process/replypage?id='+contents._id+'&page='+page+'&max='+contents.comments.length',
          function(replyList){
@@ -9,4 +9,4 @@ function changePage(page){
         }
         $('.reply_list').html(output);
     });
-}
+}*/
