@@ -25,11 +25,17 @@
                         var output = '';
                         for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
                             output +=
-                                '<div class="comment_box">'
+                                '<div class="comment_box" id="'+reply[i]._id+'">'
                                 +   '<ul class="comment">'
                                 +       '<li class="comment_info">'
                                 +         '<span>'+reply[i].name+'</span>'
                                 +         ' <span>'+dateChange(reply[i].date)+'</span>'
+                                +         '<div class="right">'
+                               // +           '<a href="#" onclick="replymodify('+contents._id+','+contents.comments[j]._id+');" class="wbtn">ADJUST</a>'
+                    
+                                +           '<a href="#" onclick="replymodify(\'contents._id\',\'replyid\');" class="wbtn">ADJUST</a>'
+                                +           '<button class="btn btn-danger"><a href="/process/replydelete?id=\'contents.comments[j]._id\'" class="wbtn">DELETE</a></button>'
+                                +           '</div>'
                                 +       '</li>'
                                 +       '<li class="comment_area">'
                                 +          reply[i].memo
@@ -41,7 +47,7 @@
                     }
                 });
         }
-        function replymodified(contentid,replyid){
+        function replymodified(contentid,replyid){//수정 완료 버튼 누름
             console.log('replymodified 호출',contentid,',',replyid);
             $.ajax({
                 url:'/process/replymodified?contentid='+contentid+'&replyid='+replyid+'&modifiedtext='+$('textarea#modify').val()+"",
@@ -51,11 +57,12 @@
                     console.log('reply',reply);
                     for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
                             output +=
-                                '<div class="comment_box">'
+                                '<div class="comment_box" id="'+reply[i]._id+'">'
                                 +   '<ul class="comment">'
                                 +       '<li class="comment_info">'
                                 +         '<span>'+reply[i].name+'</span>'
                                 +         ' <span>'+dateChange(reply[i].date)+'</span>'
+                        
                                 +       '</li>'
                                 +       '<li class="comment_area">'
                                 +          reply[i].memo
@@ -67,7 +74,7 @@
                 }
             })
         }
-        function replymodify(contentid,replyid){
+        function replymodify(contentid,replyid){//수정 버튼 누르고 출력
             console.log('id:',contentid,',',replyid);
                 $.ajax({
                     url: '/process/replymodify?contentid='+contentid+'&replyid='+replyid+"",
@@ -77,19 +84,21 @@
                         console.log('reply',reply);
                         for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
                             output +=//추후에 해당 댓글 밑에 붙이기.
-                                '<div class="comment_box">'
+                                '<div class="comment_box" id="'+reply[i]._id+'">'
                                 +   '<ul class="comment">'
                                 +       '<li class="comment_info">'
                                 +         '<span>'+reply[i].name+'</span>'
                                 +         ' <span>'+dateChange(reply[i].date)+'</span>'
-                                +           '<div class="left">'
+                                +           '<div class="right">'
                                 +               '<a href="#" onclick="replymodified(\''+contentid+'\',\''+replyid+'\');" class="wbtn">ADJUST</a>'
+                                +               '<button class="btn btn-warning"><a class="wbtn" id="cancel">CANCEL</a></button>'
                                 +           '</div>'
                                 +       '</li>'
                                 +       '<li class="comment_area"><textarea id="modify" style="width:100%;" rows="4" name="reply">'+reply[i].memo+'</textarea></li>'
                                 +   '</ul>'
                                 +'</div>';
                         }
+                        //$('#'+replyid+'').html(output);//modal에 넣기...
                         $('.reply_list').html(output);
                     }
                 });
@@ -134,12 +143,12 @@
         <%
         for(var j=0;j<contents.comments.length;j++){
             if(j<5){%>
-            <div class="comment_box">
+            <div class="comment_box" id="<%=contents.comments[j]._id%>"><!--여기 붙이기?-->
             <ul class="comment">
                 <li class="comment_info">
                     <span class="one_line"><%=contents.comments[j].name%></span>
                     <span class="one_line"><%=dateFormatChange(contents.comments[j].date)%></span>
-                    <div class="left">
+                    <div class="right">
                         <a href="#" onclick="replymodify('<%=contents._id%>','<%=contents.comments[j]._id%>');" class="wbtn">ADJUST</a>
                         <button class="btn btn-danger"><a href="/process/replydelete?id=<%=contents.comments[j]._id%>" class="wbtn">DELETE</a></button>
                     </div>

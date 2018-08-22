@@ -61,22 +61,28 @@ var replymodified=function(req,res){
     //database.BoardModel.find({_id:contentid})
     database.BoardModel.findOneAndUpdate(
         {_id:contentid,comments:{$elemMatch:{_id:replyid}}},
-        {$set:{"comments.$.memo":modifiedtext}},
+        {$set:{"comments.$.memo":modifiedtext}},//comments에서 검색된 원소의 memo에다가 수정된 글 넣기.
         function(err,results){
             if(err) throw err;
             console.log(results);
-            res.send({reply:results.comments});
+            if(results){
+                database.BoardModel.find({_id:contentid},function(err,reply){
+                    if(err) throw err;
+                    console.log('reply after modifying',reply[0].comments);
+                    res.send({reply:reply[0].comments});
+                });
+            }
     });
-    /*database.BoardModel.findOneAndUpdate(
-        {_id:contentid},//1. 글 찾기
-        {$set:{"comments.$[elem].memo":modifiedtext}},//해당 배열 요소의 memo에 값 쓰기
-        {arrayFilters:[{"elem._id":replyid}],new:true},//2. 배열의 요소 중 id 일치하는 것 찾기
-        function(err,modified){
-            if(err) throw err;
-            console.log('modified',modified);
-            //console.log('modified',modified.comments);
-            res.send({reply:modified.comments});
-    });*/
+/*database.BoardModel.findOneAndUpdate(
+    {_id:contentid},//1. 글 찾기
+    {$set:{"comments.$[elem].memo":modifiedtext}},//해당 배열 요소의 memo에 값 쓰기
+    {arrayFilters:[{"elem._id":replyid}],new:true},//2. 배열의 요소 중 id 일치하는 것 찾기
+    function(err,modified){
+        if(err) throw err;
+        console.log('modified',modified);
+        //console.log('modified',modified.comments);
+        res.send({reply:modified.comments});
+});*/
 }
 var replydelete=function(req,res){
     console.log('replydelete 호출됨');
