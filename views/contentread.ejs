@@ -16,45 +16,20 @@
             console.log(d);
             return d.toLocaleTimeString('ko-KR',option);
         }
-        function changePage(page){
-            console.log('changePage',page);
-                $.ajax({
-                    url: '/process/replypage?id=<%=contents._id%>&page='+page+"&max=<%=contents.comments.length%>",
-                    type: "get",
-                    success: function(reply) {
-                        var output = '';
-                        for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
-                            output +=
-                                '<div class="comment_box" id="'+reply[i]._id+'">'
-                                +   '<ul class="comment">'
-                                +       '<li class="comment_info">'
-                                +         '<span>'+reply[i].name+'</span>'
-                                +         ' <span>'+dateChange(reply[i].date)+'</span>'
-                                +         '<div class="right">'
-                               // +           '<a href="#" onclick="replymodify('+contents._id+','+contents.comments[j]._id+');" class="wbtn">ADJUST</a>'
-                    
-                                +           '<a href="#" onclick="replymodify(\'contents._id\',\'replyid\');" class="wbtn">ADJUST</a>'
-                                +           '<button class="btn btn-danger"><a href="/process/replydelete?id=\'contents.comments[j]._id\'" class="wbtn">DELETE</a></button>'
-                                +           '</div>'
-                                +       '</li>'
-                                +       '<li class="comment_area">'
-                                +          reply[i].memo
-                                +       '</li>'
-                                +   '</ul>'
-                                +'</div>';
-                        }
-                        $('.reply_list').html(output);
-                    }
-                });
-        }
         function replymodified(contentid,replyid){//수정 완료 버튼 누름
             console.log('replymodified 호출',contentid,',',replyid);
+            var text=$('#m'+replyid).val();
+            text=text.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+            console.log('text:',text);
             $.ajax({
-                url:'/process/replymodified?contentid='+contentid+'&replyid='+replyid+'&modifiedtext='+$('textarea#modify').val()+"",
+                url:'/process/replymodified?contentid='+contentid+'&replyid='+replyid+'&modifiedtext='+text,
                 type:"get",
                 success:function(reply){
                     var output='';
                     console.log('reply',reply);
+                    $('#close').trigger('click');
+                    console.log('close 클릭됨');
+                    location.reload();
                     for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
                             output +=
                                 '<div class="comment_box" id="'+reply[i]._id+'">'
@@ -62,47 +37,76 @@
                                 +       '<li class="comment_info">'
                                 +         '<span>'+reply[i].name+'</span>'
                                 +         ' <span>'+dateChange(reply[i].date)+'</span>'
-                        
                                 +       '</li>'
-                                +       '<li class="comment_area">'
+                                +       '<li class="comment_area"><pre>'
                                 +          reply[i].memo
-                                +       '</li>'
+                                +       '</pre></li>'
                                 +   '</ul>'
                                 +'</div>';
                         }
-                        $('.reply_list').html(output);
+                        //$('.reply_list').html(output);
                 }
             })
         }
-        function replymodify(contentid,replyid){//수정 버튼 누르고 출력
-            console.log('id:',contentid,',',replyid);
+        function changePage(page){
+            console.log('changePage',page);
                 $.ajax({
-                    url: '/process/replymodify?contentid='+contentid+'&replyid='+replyid+"",
+                    url: '/process/replypage?id=<%=contents._id%>&page='+page+"&max=<%=contents.comments.length%>",
                     type: "get",
                     success: function(reply) {
+                        var contentsid=reply._id;
+                        var reply=reply.comments;
+                        
+                        console.log('page changed');
+                        console.log('rep',reply,'id:',contentsid);
                         var output = '';
-                        console.log('reply',reply);
                         for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
-                            output +=//추후에 해당 댓글 밑에 붙이기.
-                                '<div class="comment_box" id="'+reply[i]._id+'">'
-                                +   '<ul class="comment">'
-                                +       '<li class="comment_info">'
-                                +         '<span>'+reply[i].name+'</span>'
-                                +         ' <span>'+dateChange(reply[i].date)+'</span>'
-                                +           '<div class="right">'
-                                +               '<a href="#" onclick="replymodified(\''+contentid+'\',\''+replyid+'\');" class="wbtn">ADJUST</a>'
-                                +               '<button class="btn btn-warning"><a class="wbtn" id="cancel">CANCEL</a></button>'
-                                +           '</div>'
-                                +       '</li>'
-                                +       '<li class="comment_area"><textarea id="modify" style="width:100%;" rows="4" name="reply">'+reply[i].memo+'</textarea></li>'
-                                +   '</ul>'
-                                +'</div>';
+                            
+        output +=
+            '<div class="comment_box" id="'+reply[i]._id+'">'
+            +   '<ul class="comment">'
+            +       '<li class="comment_info">'
+            +         '<span>'+reply[i].name+'</span>'
+            +         ' <span>'+dateChange(reply[i].date)+'</span>'
+            +         '<div class="right">'
+            +'<a href=#1'+reply[i]._id+' class="btn btn-primary" class="wbtn" data-toggle="modal">ADJUST</a>'
+            +           '<button class="btn btn-danger"><a href="/process/replydelete?id=\'contents.comments[j]._id\'" class="wbtn">DELETE</a></button>'
+            +           '</div>'
+            +       '</li>'
+            +       '<li class="comment_area"><pre class="memo">'
+            +          reply[i].memo
+            +       '</pre></li>'
+            +   '</ul>'
+            +'</div>'
+
+            +'<div class="modal fade" id=1'+reply[i]._id+' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'
+              +'<div class="modal-dialog" role="document">'
+                +'<div class="modal-content">'
+                  +'<div class="modal-header">'
+                    +'<h5 class="modal-title" id="exampleModalLabel">'+reply[i].name +' '+ dateChange(reply[i].date)+'</h5>'
+                    +'<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                      +'<span aria-hidden="true">&times;</span>'
+                    +'</button>'
+                  +'</div>'
+                  +'<div class="modal-body">'
+                      +'<div class="form-group">'
+                        +'<label for="message-text" class="col-form-label">글 수정:</label>'
+                        +'<textarea class="form-control" id="m'+reply[i]._id+'" wrap="hard">'+reply[i].memo+'</textarea>'
+                      +'</div>'
+                  +'</div>'
+                  +'<div class="modal-footer">'
+                    +'<button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>'
+                    +'<button type="button" class="btn btn-primary"><a href="#.reply_list" onclick="replymodified(\''+contentsid+'\',\''+reply[i]._id+'\');" class="wbtn">ADJUST</a></button>'
+                  +'</div>'
+                +'</div>'
+              +'</div>'
+            +'</div>';
                         }
-                        //$('#'+replyid+'').html(output);//modal에 넣기...
                         $('.reply_list').html(output);
                     }
                 });
         }
+        
 </script>
 <body>
     <%function dateFormatChange(date){
@@ -142,37 +146,62 @@
         <div class="reply_list">
         <%
         for(var j=0;j<contents.comments.length;j++){
-            if(j<5){%>
-            <div class="comment_box" id="<%=contents.comments[j]._id%>"><!--여기 붙이기?-->
+            if(j<5){
+                var text=contents.comments[j].memo.replace(/<br\s*\/?>/mg,'\n');%>
+            <div class="comment_box"><!--여기 붙이기?-->
             <ul class="comment">
                 <li class="comment_info">
                     <span class="one_line"><%=contents.comments[j].name%></span>
                     <span class="one_line"><%=dateFormatChange(contents.comments[j].date)%></span>
                     <div class="right">
-                        <a href="#" onclick="replymodify('<%=contents._id%>','<%=contents.comments[j]._id%>');" class="wbtn">ADJUST</a>
+                        <a href="#<%=contents.comments[j]._id%>" class="btn btn-primary" class="wbtn" data-toggle="modal">ADJUST</a>
                         <button class="btn btn-danger"><a href="/process/replydelete?id=<%=contents.comments[j]._id%>" class="wbtn">DELETE</a></button>
                     </div>
                 </li>
                 <li class="comment_area">
-                    <%=contents.comments[j].memo%>
+                    <pre class="memo"><%=text%></pre>
                 </li>
             </ul>
             </div>
+            
+            <div class="modal fade" id="<%=contents.comments[j]._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><%=contents.comments[j].name%> <%=dateFormatChange(contents.comments[j].date)%></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label">글 수정:</label>
+                        <textarea class="form-control" id="m<%=contents.comments[j]._id%>" wrap="hard"><%=contents.comments[j].memo%></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"><a href="#reply_list" onclick="replymodified('<%=contents._id%>','<%=contents.comments[j]._id%>');" class="wbtn">ADJUST</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
         <%}
         }%>
-        </div>
+        </div> 
     </div>
    
     <%if(typeof replypage!=='undefined'){%>
         <div class="container">
             <%for(var k=1;k<=replypage;k++){%>
-            <a href="#" onclick="changePage(<%=k%>);"><%=k%></a>
+            <a href="#.reply_list" onclick="changePage(<%=k%>);"><%=k%></a>
             <%}%>
         </div>
     <%}%>
     <div class="container">
         <form action="/process/reply" method="post">
-            <textarea style="width:100%;" rows="4" placeholder="댓글 남기기" name="reply"></textarea>
+            <textarea style="width:100%;" rows="4" placeholder="댓글 남기기" name="reply" wrap="hard"></textarea>
             <input type="submit" value="작성" class="btn btn-primary"><input value="<%=contents._id%>" type="hidden" name="contentid">
         </form>
     </div>

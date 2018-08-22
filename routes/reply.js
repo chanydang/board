@@ -31,7 +31,7 @@ var replyPage=function(req,res){
     database.BoardModel.findOne({_id:id},{comments:{$slice:[skipSize,limitSize]}},function(err,pageReply){
         if(err) throw err;
         console.log('founded',pageReply);
-        res.send(pageReply.comments);
+        res.send(pageReply);
     });
 }
 
