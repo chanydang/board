@@ -19,7 +19,8 @@
         function replymodified(contentid,replyid){//수정 완료 버튼 누름
             console.log('replymodified 호출',contentid,',',replyid);
             var text=$('#m'+replyid).val();
-            text=text.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+            text=text.replace(/(?:\r\n|\r|\n)/g,'<br/>');//DB에 저장 시 개행문자는 <br>태그로 변경 후 저장됨, 그래야 수정 전 내용이 반영됨.
+            //text=text.replace(/(?:\r\n|\r|\n)/g,'\n');//DB에 저장 시 개행문자는 <br>태그로 변경 후 저장됨, 그래야 수정 전 내용이 반영됨.
             console.log('text:',text);
             $.ajax({
                 url:'/process/replymodified?contentid='+contentid+'&replyid='+replyid+'&modifiedtext='+text,
@@ -61,7 +62,8 @@
                         console.log('rep',reply,'id:',contentsid);
                         var output = '';
                         for(var i=0;i<reply.length;i++) {//현재 댓글 페이지의 전체 출력
-                            
+        var text=reply[i].memo.replace(/<br\s*\/?>/img,'\n');
+        console.log(text);
         output +=
             '<div class="comment_box" id="'+reply[i]._id+'">'
             +   '<ul class="comment">'
@@ -74,11 +76,11 @@
             +           '</div>'
             +       '</li>'
             +       '<li class="comment_area"><pre class="memo">'
-            +          reply[i].memo
+            +          text//reply[i].memo
             +       '</pre></li>'
             +   '</ul>'
             +'</div>'
-
+            //Reply Modification Modal
             +'<div class="modal fade" id=1'+reply[i]._id+' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'
               +'<div class="modal-dialog" role="document">'
                 +'<div class="modal-content">'
@@ -91,7 +93,7 @@
                   +'<div class="modal-body">'
                       +'<div class="form-group">'
                         +'<label for="message-text" class="col-form-label">글 수정:</label>'
-                        +'<textarea class="form-control" id="m'+reply[i]._id+'" wrap="hard">'+reply[i].memo+'</textarea>'
+                        +'<textarea class="form-control" id="m'+reply[i]._id+'">'+text/*reply[i].memo*/+'</textarea>'
                       +'</div>'
                   +'</div>'
                   +'<div class="modal-footer">'
@@ -147,8 +149,10 @@
         <%
         for(var j=0;j<contents.comments.length;j++){
             if(j<5){
-                var text=contents.comments[j].memo.replace(/<br\s*\/?>/mg,'\n');%>
-            <div class="comment_box"><!--여기 붙이기?-->
+                var text=contents.comments[j].memo;
+                //\s is for white space. * is for 0~n white space.
+                var text=contents.comments[j].memo.replace(/<br\s*\/?>/img,'\n');%>
+            <div class="comment_box">
             <ul class="comment">
                 <li class="comment_info">
                     <span class="one_line"><%=contents.comments[j].name%></span>
@@ -176,7 +180,7 @@
                   <div class="modal-body">
                       <div class="form-group">
                         <label for="message-text" class="col-form-label">글 수정:</label>
-                        <textarea class="form-control" id="m<%=contents.comments[j]._id%>" wrap="hard"><%=contents.comments[j].memo%></textarea>
+                        <textarea class="form-control" id="m<%=contents.comments[j]._id%>" wrap="hard"><%=text%></textarea>
                       </div>
                   </div>
                   <div class="modal-footer">
